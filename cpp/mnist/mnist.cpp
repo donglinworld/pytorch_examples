@@ -115,16 +115,22 @@ void test(
 auto main() -> int {
   torch::manual_seed(1);
 
-  torch::DeviceType device_type;
+  std::cout << "try to Training on MPS GPU." << std::endl;
+  torch::DeviceType device_type = torch::kMPS;
+  /*
   if (torch::cuda::is_available()) {
     std::cout << "CUDA available! Training on GPU." << std::endl;
     device_type = torch::kCUDA;
   } else {
     std::cout << "Training on CPU." << std::endl;
     device_type = torch::kCPU;
-  }
+  }*/
+
   torch::Device device(device_type);
 
+  std::cout << device.is_mps() << std::endl;
+  std::cout << device.is_cpu() << std::endl;
+  
   Net model;
   model.to(device);
 
