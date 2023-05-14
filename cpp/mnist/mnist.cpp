@@ -1,5 +1,6 @@
 #include <torch/torch.h>
 
+#include <chrono>
 #include <cstddef>
 #include <cstdio>
 #include <iostream>
@@ -112,7 +113,17 @@ void test(
       static_cast<double>(correct) / dataset_size);
 }
 
+long getduration() {
+  auto now = std::chrono::system_clock::now();
+  auto now_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(now);
+  auto value = now_ms.time_since_epoch();
+  long duration = value.count();
+  return duration;
+}
+
 auto main() -> int {
+  long starttime = getduration();
+
   torch::manual_seed(1);
 
   std::cout << "try to Training on MPS GPU." << std::endl;
@@ -124,28 +135,31 @@ auto main() -> int {
   } else {
     std::cout << "Training on CPU." << std::endl;
     device_type = torch::kCPU;
-  }*/
+  }
+    */
 
   torch::Device device(device_type);
 
   std::cout << device.is_mps() << std::endl;
   std::cout << device.is_cpu() << std::endl;
-  
+
   Net model;
   model.to(device);
 
-  auto train_dataset = torch::data::datasets::MNIST(kDataRoot)
-                           .map(torch::data::transforms::Normalize<>(0.1307, 0.3081))
-                           .map(torch::data::transforms::Stack<>());
+  auto train_dataset =
+      torch::data::datasets::MNIST(kDataRoot)
+          .map(torch::data::transforms::Normalize<>(0.1307, 0.3081))
+          .map(torch::data::transforms::Stack<>());
   const size_t train_dataset_size = train_dataset.size().value();
   auto train_loader =
       torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(
           std::move(train_dataset), kTrainBatchSize);
 
-  auto test_dataset = torch::data::datasets::MNIST(
-                          kDataRoot, torch::data::datasets::MNIST::Mode::kTest)
-                          .map(torch::data::transforms::Normalize<>(0.1307, 0.3081))
-                          .map(torch::data::transforms::Stack<>());
+  auto test_dataset =
+      torch::data::datasets::MNIST(
+          kDataRoot, torch::data::datasets::MNIST::Mode::kTest)
+          .map(torch::data::transforms::Normalize<>(0.1307, 0.3081))
+          .map(torch::data::transforms::Stack<>());
   const size_t test_dataset_size = test_dataset.size().value();
   auto test_loader =
       torch::data::make_data_loader(std::move(test_dataset), kTestBatchSize);
@@ -157,4 +171,8 @@ auto main() -> int {
     train(epoch, model, device, *train_loader, optimizer, train_dataset_size);
     test(model, device, *test_loader, test_dataset_size);
   }
+  long stoptime = getduration();
+
+  std::cout << "past time: " << std::endl;
+  std::cout << stoptime - starttime << std::endl;
 }

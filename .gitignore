@@ -16,6 +16,8 @@ gcn/cora/
 gat/cora/
 docs/build
 docs/venv
+mnist/env
+
 
 # vi backups
 *~
