@@ -17,6 +17,8 @@ gat/cora/
 docs/build
 docs/venv
 mnist/env
+ctypes/build
+ctypes/env
 
 
 # vi backups
