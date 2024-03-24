@@ -33,3 +33,7 @@ Train Epoch: 4 [59584/60000] Loss: 0.1239
 Test set: Average loss: 0.0875 | Accuracy: 0.972
 ...
 ```
+2024/03/24 success with libtorch-macos-arm64-2.2.1.zip, libomp is needed, installed libomp by the following:
+brew install libomp
+cd /usr/local/lib
+sudo ln -s /opt/homebrew/opt/libomp/lib/libomp.dylib libomp.dylib
