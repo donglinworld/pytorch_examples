@@ -3,6 +3,7 @@ data
 *.pyc
 OpenNMT/data
 cpp/mnist/build
+cpp/minst1/build
 cpp/dcgan/build
 dcgan/*.png
 dcgan/*.pth
