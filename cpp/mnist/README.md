@@ -37,3 +37,5 @@ Test set: Average loss: 0.0875 | Accuracy: 0.972
 brew install libomp
 cd /usr/local/lib
 sudo ln -s /opt/homebrew/opt/libomp/lib/libomp.dylib libomp.dylib
+
+2024/10/13 working with libtorch-macos-arm64-2.4.1.zip, but needed removing libomp.dylib in libtorch folder.
